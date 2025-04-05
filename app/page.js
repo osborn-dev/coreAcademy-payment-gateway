@@ -25,50 +25,61 @@ export default function Home() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-
+    e.preventDefault();
+  
     if (!name || !email || !role || !paymentMethod || !discordId || !howHeard) {
-      setError('All fields are required')
-      setSuccess('');
-      return
-  }
-  try {
-    const response = await fetch('api/submit',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name, email, role, paymentMethod, discordId, howHeard })
-    })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      setError(data.message || 'Submission failed');
-      setSuccess('');
-      return
+      setError("All fields are required");
+      setSuccess("");
+      return;
     }
+  
+    try {
+      const response = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, role, paymentMethod, discordId, howHeard }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        setError(data.message || "Submission failed");
+        setSuccess("");
+        return;
+      }
+  
+      // Redirect to payment endpoint based on paymentMethod
+      const paymentUrl =
+        data.paymentMethod === "Paystack"
+          ? `/api/paystack?userId=${data.userId}&paymentId=${data.paymentId}`
+          : `/api/stripe?userId=${data.userId}&paymentId=${data.paymentId}`;
+  
+          const paymentResponse = await fetch(paymentUrl);
+          const paymentData = await paymentResponse.json();
+      
+          if (!paymentResponse.ok) {
+            setError(paymentData.message || "Payment initiation failed");
+            return;
+          }
+      
+          window.location.href = paymentData.url;
+      setSuccess("Submission successful! Redirecting...");
+      setTimeout(() => setSuccess(""), 3000);
+  
+      setName("");
+      setEmail("");
+      setDiscordID("");
+      setHowHeard("");
+      setRole("");
+      setPaymentMethod("");
+      setError("");
+    } catch (error) {
+      setError("Something went wrong");
+      setSuccess("");
+      console.log("Error submitting user information", error);
+    }
+  };
 
-  // Reset form on success
-  setName('');
-  setEmail('');
-  setDiscordID('');
-  setHowHeard('');
-  setRole(''); // Reset role
-  setPaymentMethod(''); // Reset payment method
-  setError('');
-  setSuccess('Submission successful!'); // Notify user of success
-
-  setTimeout(() => {
-    setSuccess('');
-  }, 3000);
-
-  } catch (error) {
-    setError('Something went wrong')
-    setSuccess('');
-    console.log('Error submitting user information', error)
-  }
-}
   return (
     <main className="min-h-screen bg-gray-900 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Logo Top Left */}

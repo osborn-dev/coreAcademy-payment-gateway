@@ -16,8 +16,8 @@ export async function GET(req) {
       return NextResponse.json({ message: "Missing parameters" }, { status: 400 });
     }
 
-    const payment = await Payment.findById(paymentId).lean();
-    const user = await User.findById(userId).lean();
+    const payment = await Payment.findById(paymentId);
+    const user = await User.findById(userId);
 
     // validation & confirming if the paymentId belongs to the user
     if (!payment || !user || String(payment.userId) !== userId) {
@@ -35,7 +35,7 @@ export async function GET(req) {
         amount: payment.amount, // Set payment amount in smallest currency unit (e.g., kobo for NGN)  
         currency: payment.currency, // Define currency for transaction
         // Redirect after successful payment
-        callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/payment-success?paymentId=${paymentId}`,
+        callback_url: `${process.env.NEXT_PUBLIC_URL}/api/payment-success?paymentId=${paymentId}`,
         metadata: { userId }, // metadata for reference (linking payment to user)
       }),
     });
@@ -44,6 +44,9 @@ export async function GET(req) {
     if (!data.status) { // Check if the request was successful 
       return NextResponse.json({ message: "Error initializing payment", error: data }, { status: 400 });
     }
+
+    payment.transactionId = data.data.reference; // Save Paystack reference
+    await payment.save(); // Update Payment
 
     return NextResponse.json({ url: data.data.authorization_url }); // Return the Paystack payment authorization URL 
 

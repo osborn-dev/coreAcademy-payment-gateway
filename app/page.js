@@ -56,6 +56,7 @@ export default function Home() {
   
           const paymentResponse = await fetch(paymentUrl);
           const paymentData = await paymentResponse.json();
+
       
           if (!paymentResponse.ok) {
             setError(paymentData.message || "Payment initiation failed");

@@ -18,7 +18,7 @@ export async function GET(req) {
     }
 
     // checking the database for the userId & paymentId gotten from the request
-    const payment = await Payment.findById(paymentId).lean();
+    const payment = await Payment.findById(paymentId);
     const user = await User.findById(userId).lean();
 
     // validation & confirming if the paymentId belongs to the user
@@ -45,6 +45,9 @@ export async function GET(req) {
       metadata: { userId }, // metadata for reference (linking payment to user)
     });
 
+    payment.transactionId = session.id; // Save session_id in transactionId
+    await payment.save(); // Update Payment in DB
+    
     return NextResponse.json({ url: session.url });
   } catch (error) {
     return NextResponse.json({ message: "Error creating payment", error: error.message }, { status: 500 });

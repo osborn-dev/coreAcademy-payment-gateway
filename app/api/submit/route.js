@@ -12,6 +12,11 @@ export async function POST(req) {
       return NextResponse.json({ message: "All fields are required" }, { status: 400 });
     }
 
+    // checks for proper discordId
+    if (!/^\d{17,19}$/.test(discordId)) {
+      return NextResponse.json({ message: "Invalid Discord ID—must be 17-19 digits" }, { status: 400 });
+    }
+
     // Connect to DB
     await connectDB();
 

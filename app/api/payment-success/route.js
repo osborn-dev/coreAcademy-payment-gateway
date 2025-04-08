@@ -49,13 +49,19 @@ export async function GET(req) { // Define GET handler for /api/payment-success
     await user.save(); // Save updated User doc
 
     // Trigger bot to assign role
-    // await fetch("http://localhost:3001/assign-role", { // Call bot’s endpoint
-    //   method: "POST", // Use POST method
-    //   headers: { "Content-Type": "application/json" }, // Set JSON content type
-    //   body: JSON.stringify({ userDiscordId: user.discordId, role: user.role }), // Send Discord ID and role
-    // });
+    const botResponse = await fetch("http://localhost:3001/assign-role", { // Call bot’s endpoint
+      method: "POST", // Use POST method
+      headers: { "Content-Type": "application/json" }, // Set JSON content type
+      body: JSON.stringify({ userDiscordId: user.discordId, role: user.role }), // Send Discord ID and role
+    });
 
-    // await sendRoadmapEmail(user.email, user.role); // Call email function (pseudo-code)
+    const botData = await botResponse.json();
+    if (!botData.success) {
+    console.error("Bot error:", botData.error);
+    // Still redirect—role can be assigned later if user joins
+}
+
+    await sendRoadmapEmail(user.email, user.role); // Call email function (pseudo-code)
 
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/payment-success`); // redirect to success page
   } catch (error) { // Catch any errors
@@ -65,6 +71,6 @@ export async function GET(req) { // Define GET handler for /api/payment-success
 }
 
 // Pseudo-code email function (replace with real implementation)
-// async function sendRoadmapEmail(email, role) {
-//   console.log(`Sending roadmap to ${email} for ${role}`); // Placeholder for email logic
-// }
+async function sendRoadmapEmail(email, role) {
+  console.log(`Sending roadmap to ${email} for ${role}`); // Placeholder for email logic
+}

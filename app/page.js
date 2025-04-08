@@ -32,6 +32,12 @@ export default function Home() {
       setSuccess("");
       return;
     }
+
+    if (!/^\d{17,19}$/.test(discordId)) {
+      setError("Invalid Discord ID—copy it from Discord settings.");
+      setSuccess("");
+      return;
+    }
   
     try {
       const response = await fetch("/api/submit", {
@@ -153,12 +159,21 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-3">
               <FontAwesomeIcon icon={faUser} className="text-gray-500" />
-              <input type="text" name="discordId" value={discordId} placeholder="Enter your discord ID" onChange={e => setDiscordID(e.target.value)} required className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" />
+              <input type="text" name="howHeard" value={howHeard} placeholder="How did you hear about us?" onChange={e => setHowHeard(e.target.value)}  required className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" />
             </div>
             <div className="flex items-center gap-3">
               <FontAwesomeIcon icon={faUser} className="text-gray-500" />
-              <input type="text" name="howHeard" value={howHeard} placeholder="How did you hear about us?" onChange={e => setHowHeard(e.target.value)}  required className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" />
+              <input type="text" name="discordId" value={discordId} placeholder="Enter your discord ID" onChange={e => setDiscordID(e.target.value)} required className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" />
             </div>
+            <p
+              style={{
+                fontSize: "0.9em",
+                color: "#666",
+                textAlign: "center", // Center the text
+              }}
+            >
+            Get from Discord: Settings → Advanced → Developer Mode → Profile → Copy User ID
+          </p>
             <button type="submit" className="w-full p-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 font-semibold shadow-md">
               Pay now
             </button>

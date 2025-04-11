@@ -25,6 +25,16 @@ export async function POST(req) {
             return NextResponse.json({ message: 'A user with this email already exists' }, { status: 400 });
         }
 
+        // checking user discordId in the server
+        const botRes = await fetch(`http://localhost:3001/check-member?discordId=${discordId}`);
+        const botData = await botRes.json();
+        if (!botRes.ok || !botData.inServer) { // Evaluates bot’s response
+          return NextResponse.json(
+            { message: "Your Discord ID isn’t in our server—join via the button!" },
+            { status: 403 }
+          );
+        }
+
     // Create and save user
     const user = await User.create({ name, email, role, paymentMethod, howHeard, discordId });
 
@@ -42,8 +52,11 @@ export async function POST(req) {
       ...paymentConfig[paymentMethod],
     });
 
-    // Return response with NextResponse, through the 'paymentMethod' payment.id is gotten
-    return NextResponse.json({ userId: user._id, paymentId: payment._id, paymentMethod }, { status: 201 });
+    const paymentUrl = paymentMethod === "Paystack" // Generates payment redirect URL
+      ? `${process.env.NEXT_PUBLIC_URL}/api/paystack?userId=${user._id}&paymentId=${payment._id}`
+      : `${process.env.NEXT_PUBLIC_URL}/api/stripe?userId=${user._id}&paymentId=${payment._id}`;
+
+    return NextResponse.json({ paymentUrl }); // Returns payment URL if all checks pass
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(

@@ -48,7 +48,8 @@ export async function GET(req) {
     payment.transactionId = session.id; // Save session_id in transactionId
     await payment.save(); // Update Payment in DB
     
-    return NextResponse.json({ url: session.url });
+    // redirects to stripe checkout 
+    return NextResponse.redirect(session.url);
   } catch (error) {
     return NextResponse.json({ message: "Error creating payment", error: error.message }, { status: 500 });
   }

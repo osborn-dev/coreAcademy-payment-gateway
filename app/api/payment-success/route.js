@@ -3,6 +3,8 @@ import Payment from "@/Models/Payment"; // Import Payment model for DB access
 import User from "@/Models/User"; // Import User model for DB access
 import connectDB from "@/Config/DataBase";// Import DB connection function
 import Stripe from "stripe"; // Import Stripe SDK
+import transporter from '@/Lib/nodemailer'
+import path from 'path'
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" }); // Initialize Stripe with secret key and API version
@@ -58,19 +60,39 @@ export async function GET(req) { // Define GET handler for /api/payment-success
     const botData = await botResponse.json();
     if (!botData.success) {
     console.error("Bot error:", botData.error);
-    // Still redirect—role can be assigned later if user joins
-}
+    }
 
-    await sendRoadmapEmail(user.email, user.role); // Call email function (pseudo-code)
+    const roadmapFile = path.join(process.cwd(), "roadmaps", `${user.role.toLowerCase()}-roadmap.pdf`);
+
+    // Sending email with Discord link and PDF roadmap
+    const mailOptions = {
+      from: process.env.EMAIL_USER, 
+      to: user.email,
+      subject: "Welcome to CoreAcademy",
+      text: `
+        Hey ${user.name},
+
+        Thanks for joining CoreAcademy! Your ${user.role} role is set in our Discord server.
+
+        Join us here: https://discord.gg/BAbVZBAn
+
+        Attached is your ${user.role} roadmap—check it out and get started!
+
+        See you in Discord!
+        The CoreAcademy Team
+      `,
+      attachments: [
+        {
+          filename: `${user.role}-roadmap.pdf`, // Name in email
+          path: roadmapFile, // Path to PDF
+        },
+      ],
+    };
+    await transporter.sendMail(mailOptions);
 
     return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/payment-success`); // redirect to success page
   } catch (error) { // Catch any errors
     console.error("Payment success error:", error); // Log error details
     return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 }); // Return 500 with error info
   }
-}
-
-// Pseudo-code email function (replace with real implementation)
-async function sendRoadmapEmail(email, role) {
-  console.log(`Sending roadmap to ${email} for ${role}`); // Placeholder for email logic
 }

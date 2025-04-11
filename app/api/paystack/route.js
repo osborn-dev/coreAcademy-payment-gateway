@@ -48,7 +48,7 @@ export async function GET(req) {
     payment.transactionId = data.data.reference; // Save Paystack reference
     await payment.save(); // Update Payment
 
-    return NextResponse.json({ url: data.data.authorization_url }); // Return the Paystack payment authorization URL 
+    return NextResponse.redirect(data.data.authorization_url); // Return the Paystack payment authorization URL 
 
     // Handle unexpected errors 
   } catch (error) {

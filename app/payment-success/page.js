@@ -7,7 +7,7 @@ export default function PaymentSuccess() {
         <CheckCircleIcon className="text-green-500 w-16 h-16 mx-auto mb-4" />
         <h1 className="text-2xl font-bold text-gray-800">Payment Successful!</h1>
         <p className="text-gray-600 mt-2">
-          Your payment has been processed. Your role is assigned, and your roadmap is on its way.
+          Your payment has been processe, Your role has been assigned, and your roadmap is on its way to your mail!
         </p>
       </div>
     </div>

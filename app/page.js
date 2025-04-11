@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCode, faUser, faEnvelope, faChalkboardTeacher, faCreditCard } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -12,9 +16,6 @@ export default function Home() {
   const [howHeard, setHowHeard] = useState('');
   const [role, setRole] = useState(''); // Added state for role
   const [paymentMethod, setPaymentMethod] = useState(''); // Added state for paymentMethod
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(''); // Added for success feedback
-
 
 
   const astronautVariants = {
@@ -24,18 +25,24 @@ export default function Home() {
     },
   };
 
+  useEffect(() => {
+    toast.info("Join the server with the button above before proceeding with the payment if you haven't joined yet", {
+      position: "left-center",
+      autoClose: 5000,
+      hideProgressBar: true,
+    });
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     if (!name || !email || !role || !paymentMethod || !discordId || !howHeard) {
-      setError("All fields are required");
-      setSuccess("");
+      toast.error("All fields are required");
       return;
     }
 
     if (!/^\d{17,19}$/.test(discordId)) {
-      setError("Invalid Discord ID—copy it from Discord settings.");
-      setSuccess("");
+      toast.error("Invalid Discord ID copy it from Discord settings.");
       return;
     }
   
@@ -49,29 +56,22 @@ export default function Home() {
       const data = await response.json();
   
       if (!response.ok) {
-        setError(data.message || "Submission failed");
-        setSuccess("");
+        toast.error(data.message || "Something went wrong", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: true,
+        });
         return;
       }
   
       // Redirect to payment endpoint based on paymentMethod
-      const paymentUrl =
-        data.paymentMethod === "Paystack"
-          ? `/api/paystack?userId=${data.userId}&paymentId=${data.paymentId}`
-          : `/api/stripe?userId=${data.userId}&paymentId=${data.paymentId}`;
-  
-          const paymentResponse = await fetch(paymentUrl);
-          const paymentData = await paymentResponse.json();
+      window.location.href = data.paymentUrl; // Redirects to payment if successful
 
-      
-          if (!paymentResponse.ok) {
-            setError(paymentData.message || "Payment initiation failed");
-            return;
-          }
-      
-          window.location.href = paymentData.url;
-      setSuccess("Submission successful! Redirecting...");
-      setTimeout(() => setSuccess(""), 3000);
+      toast.success("Submission successful! Redirecting...", {
+        hideProgressBar: true,
+        autoClose: 5000,
+      });
+      setTimeout(() => 3000);
   
       setName("");
       setEmail("");
@@ -79,23 +79,24 @@ export default function Home() {
       setHowHeard("");
       setRole("");
       setPaymentMethod("");
-      setError("");
     } catch (error) {
-      setError("Something went wrong");
-      setSuccess("");
-      console.log("Error submitting user information", error);
+       toast.error("Submission failed—try again", { // Handles network/fetch errors
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+      });
     }
   };
 
   return (
     <main className="min-h-screen bg-gray-900 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Logo Top Left */}
       <div className="absolute top-8 left-8 flex items-center gap-2 z-20">
-        <FontAwesomeIcon icon={faCode} className="text-orange-500 text-xl" />
-        <span className="text-xl font-semibold text-white">{"CoreAcademy"}</span>
+        <FontAwesomeIcon icon={faCode} className="text-blue-500 text-xl" />
+        <span className="text-xl font-semibold text-white">CoreAcademy</span>
       </div>
-      <div className="absolute top-8 right-8 flex items-center gap-2 z-20">
-        <p className="text-xl font-semibold text-white">Why CoreAcademy?</p>
+      <div className="absolute top-8 right-8 flex items-center gap-4 z-20">
+        <Link href="/about" className="text-xl font-semibold text-white">Why CoreAcademy?</Link>
+        <a href="https://discord.gg/BAbVZBAn" className="text-white bg-blue-500 px-4 py-2 rounded-md font-semibold">Join The Server</a>
       </div>
 
       {/* Animated Astronaut - Always Background */}
@@ -174,14 +175,13 @@ export default function Home() {
             >
             Get from Discord: Settings → Advanced → Developer Mode → Profile → Copy User ID
           </p>
-            <button type="submit" className="w-full p-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 font-semibold shadow-md">
+            <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 font-semibold shadow-md">
               Pay now
             </button>
-            {error && (<div className="bg-red-500 text-white w-fit text-sm py-1 rounded-md mt-2">{error}</div>)}
-            {success && (<div className="bg-green-500 text-white w-fit text-sm py-1 rounded-md mt-2">{success}</div>)}
           </div>
         </form>
       </motion.div>
+      <ToastContainer />
     </main>
   );
 }

@@ -1,15 +1,24 @@
-import { CheckCircleIcon } from "lucide-react";
+import connectDB from "@/Config/DataBase";
+import Payment from "@/Models/Payment";
+import User from "@/Models/User";
+import PaymentSuccessClient from "@/Components/paymentSuccessClient";
 
-export default function PaymentSuccess() {
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-6">
-      <div className="bg-white shadow-lg rounded-2xl p-8 text-center max-w-md">
-        <CheckCircleIcon className="text-green-500 w-16 h-16 mx-auto mb-4" />
-        <h1 className="text-2xl font-bold text-gray-800">Payment Successful!</h1>
-        <p className="text-gray-600 mt-2">
-          Your payment has been processe, Your role has been assigned, and your roadmap is on its way to your mail!
-        </p>
-      </div>
-    </div>
-  );
+export default async function PaymentSuccess({ searchParams }) {
+  let email = "your@email.com";
+  try {
+    await connectDB();
+    const params = await searchParams; 
+    const paymentId = params.paymentId;
+
+    if (paymentId) {
+      const payment = await Payment.findById(paymentId);
+      if (payment) {
+        const user = await User.findById(payment.userId);
+        if (user) email = user.email;
+      }
+    }
+  } catch (error) {
+    console.error("Payment success fetch error:", error);
+  }
+  return <PaymentSuccessClient email={email} />;
 }

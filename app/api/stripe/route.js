@@ -19,7 +19,7 @@ export async function GET(req) {
 
     // checking the database for the userId & paymentId gotten from the request
     const payment = await Payment.findById(paymentId);
-    const user = await User.findById(userId).lean();
+    const user = await User.findById(userId);
 
     // validation & confirming if the paymentId belongs to the user
     if (!payment || !user || String(payment.userId) !== userId) {

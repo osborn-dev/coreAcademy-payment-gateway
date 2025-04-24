@@ -109,9 +109,11 @@ export default function Home() {
         <FontAwesomeIcon icon={faCode} className="text-blue-500 text-xl" />
         <span className="text-xl font-semibold text-white">CoreAcademy</span>
       </div>
+
       <div className="absolute top-8 right-8 flex items-center gap-4 z-20">
         <Link href="/about" className="text-lg text-white hover:text-blue-300 transition-colors hidden md:block">
         Why CoreAcademy?</Link>
+        
         <a href="https://discord.gg/BAbVZBAn" className="text-white bg-blue-500 px-4 py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
         Join The Server</a>
       </div>
@@ -169,6 +171,7 @@ export default function Home() {
                 <option value="fullstack">Fullstack Development</option>
               </select>
             </div>
+
             <div className="flex items-center gap-3">
               <FontAwesomeIcon icon={faCreditCard} className="text-gray-500" />
               <select name="paymentMethod" onChange={(e) => setPaymentMethod(e.target.value)} value={paymentMethod} required className="w-full p-2 border border-gray-300  hover:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">

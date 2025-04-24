@@ -5,6 +5,7 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import Header from "./Header1";
 
+// prop passing email from payment-success page
 export default function PaymentSuccessClient({ email }) {
   return (
     <>

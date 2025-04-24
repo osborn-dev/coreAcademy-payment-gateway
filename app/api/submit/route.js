@@ -37,9 +37,10 @@ export async function POST(req) {
             return NextResponse.json({ message: 'A user with this email already exists' }, { status: 400 });
         }
 
-        // checking user discordId in the server
-    try {
+        
+    try {  // checking user discordId in the server
       const botRes = await fetch(`http://localhost:3001/check-member?discordId=${discordId}`);
+
       const botData = await botRes.json();
       
       if (!botRes.ok || !botData.inServer) { // Evaluates bot's response
@@ -73,7 +74,7 @@ export async function POST(req) {
       ...paymentConfig[paymentMethod],
     });
 
-    const paymentUrl = paymentMethod === "Paystack" // Generates payment redirect URL
+    const paymentUrl = paymentMethod === "Paystack" // Generates payment-redirect URL
       ? `${process.env.NEXT_PUBLIC_URL}/api/paystack?userId=${user._id}&paymentId=${payment._id}`
       : `${process.env.NEXT_PUBLIC_URL}/api/stripe?userId=${user._id}&paymentId=${payment._id}`;
 

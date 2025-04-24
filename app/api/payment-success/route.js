@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";// Import Next.js response helper
+import { NextResponse } from "next/server";//  Next.js response helper
 import Payment from "@/Models/Payment"; // Import Payment model for DB access
-import User from "@/Models/User"; // Import User model for DB access
-import connectDB from "@/Config/DataBase";// Import DB connection function
+import User from "@/Models/User"; // User model for DB access
+import connectDB from "@/Config/DataBase";//  DB connection function
 import Stripe from "stripe"; // Import Stripe SDK
 import transporter from '@/Lib/nodemailer'
 import path from 'path'
@@ -12,6 +12,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2023-10-
 export async function GET(req) { // Define GET handler for /api/payment-success
   try {
     await connectDB(); // Connect to MongoDB
+
     const { searchParams } = new URL(req.url); // Parse URL query params
     const paymentId = searchParams.get("paymentId"); // Get paymentId from query (e.g., ?paymentId=xxx)
 
@@ -22,6 +23,11 @@ export async function GET(req) { // Define GET handler for /api/payment-success
     const payment = await Payment.findById(paymentId); // Fetch Payment doc by ID
     if (!payment) { // Check if payment exists
       return NextResponse.json({ message: "Payment not found" }, { status: 404 }); // Return 404 if not found
+    }
+
+    // Check if payment is already completed (by webhook)
+    if (payment.status === "completed") {
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/payment-success?paymentId=${paymentId}`); // Redirect to success page
     }
 
     // Verify payment status
@@ -51,67 +57,57 @@ export async function GET(req) { // Define GET handler for /api/payment-success
     payment.status = "completed"; // Mark payment as done
     await payment.save(); // Save updated Payment doc
 
-    const user = await User.findById(payment.userId); // Fetch User by payment’s userId
-    user.discordRoleAssigned = true; // Flip flag to trigger role assignment
-    user.roadmapSent = true; // Flip flag to trigger roadmap email
-    await user.save(); // Save updated User doc
+    // Update user flags
+    const user = await User.findById(payment.userId);
+    if (!user.discordRoleAssigned || !user.roadmapSent) { // Only update if not already done by webhook
+      user.discordRoleAssigned = true;
+      user.roadmapSent = true;
+      await user.save();
 
-    // Trigger bot to assign role
-    const botResponse = await fetch("http://localhost:3001/assign-role", { // Call bot’s endpoint
-      method: "POST", // Use POST method
-      headers: { "Content-Type": "application/json" }, // Set JSON content type
-      body: JSON.stringify({ userDiscordId: user.discordId, role: user.role }), // Send Discord ID and role
-    });
+      // Trigger Discord bot
+      console.log("Mock bot call:", { userDiscordId: user.discordId, role: user.role });
+      const botResponse = await fetch("http://localhost:3001/assign-role", { // Replace with production bot URL
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userDiscordId: user.discordId, role: user.role }),
+      });
 
-    const botData = await botResponse.json();
-    if (!botData.success) {
-    console.error("Bot error:", botData.error);
+      const botData = await botResponse.json();
+      if (!botData.success) {
+        console.error("Bot error:", botData.error); // Log bot errors
+      }
+
+      // Send email with roadmap
+      const roadmapFile = path.join(process.cwd(), "roadmaps", `${user.role.toLowerCase()}-roadmap.pdf`);
+      const htmlContent = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+            <h2 style="color: #4a6cf7;">Welcome to CoreAcademy!</h2>
+            <p>Hey ${user.name},</p>
+            <p>Thanks for joining CoreAcademy! Your <strong>${user.role}</strong> role has been set in our Discord server.</p>
+            <p>Join us here: <a href="https://discord.gg/BAbVZBAn" style="color: #4a6cf7; text-decoration: none;">https://discord.gg/BAbVZBAn</a></p>
+            <p>We've attached your ${user.role} roadmap—check it out and get started on your learning journey!</p>
+            <p>See you in Discord!</p>
+            <p><strong>The CoreAcademy Team</strong></p>
+          </div>
+        `; // 
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: user.email,
+        subject: "Welcome to CoreAcademy",
+        html: htmlContent,
+        attachments: [
+          {
+            filename: `${user.role}-roadmap.pdf`,
+            path: roadmapFile,
+          },
+        ],
+      });
     }
-
-    const roadmapFile = path.join(process.cwd(), "roadmaps", `${user.role.toLowerCase()}-roadmap.pdf`);
-
-    // HTML version of the email for better formatting
-    const htmlContent = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
-        <h2 style="color: #4a6cf7;">Welcome to CoreAcademy!</h2>
-        <p>Hey ${user.name},</p>
-        <p>Thanks for joining CoreAcademy! Your <strong>${user.role}</strong> role has been set in our Discord server.</p>
-        <p>Join us here: <a href="https://discord.gg/BAbVZBAn" style="color: #4a6cf7; text-decoration: none;">https://discord.gg/BAbVZBAn</a></p>
-        <p>We've attached your ${user.role} roadmap—check it out and get started on your learning journey!</p>
-        <p>See you in Discord!</p>
-        <p><strong>The CoreAcademy Team</strong></p>
-      </div>
-    `;
-
-    // Sending email with Discord link and PDF roadmap
-    const mailOptions = {
-      from: process.env.EMAIL_USER, 
-      to: user.email,
-      subject: "Welcome to CoreAcademy",
-      text: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
-        <h2 style="color: #4a6cf7;">Welcome to CoreAcademy!</h2>
-        <p>Hey ${user.name},</p>
-        <p>Thanks for joining CoreAcademy! Your <strong>${user.role}</strong> role has been set in our Discord server.</p>
-        <p>Join us here: <a href="https://discord.gg/BAbVZBAn" style="color: #4a6cf7; text-decoration: none;">https://discord.gg/BAbVZBAn</a></p>
-        <p>We've attached your ${user.role} roadmap—check it out and get started on your learning journey!</p>
-        <p>See you in Discord!</p>
-        <p><strong>The CoreAcademy Team</strong></p>
-      </div>
-      `,
-      html: htmlContent,
-      attachments: [
-        {
-          filename: `${user.role}-roadmap.pdf`, // Name in email
-          path: roadmapFile, // Path to PDF
-        },
-      ],
-    };
-    await transporter.sendMail(mailOptions);
-
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/payment-success?paymentId=${paymentId}`); // redirect to success page
-  } catch (error) { // Catch any errors
-    console.error("Payment success error:", error); // Log error details
-    return NextResponse.json({ message: "Server error", error: error.message }, { status: 500 }); // Return 500 with error info
+    // Redirect to frontend success page
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/payment-success?paymentId=${paymentId}`);
+    
+  } catch (error) {
+    // Log errors for debugging
+    console.error("Payment success error:", error);
   }
 }

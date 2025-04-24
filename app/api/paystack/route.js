@@ -24,6 +24,7 @@ export async function GET(req) {
       return NextResponse.json({ message: "Invalid data" }, { status: 403 });
     }
 
+    // paystack hook to initialize payment
     const response = await fetch("https://api.paystack.co/transaction/initialize", {
       method: "POST",
       headers: {

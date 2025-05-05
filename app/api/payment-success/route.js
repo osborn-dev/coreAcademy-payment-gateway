@@ -4,10 +4,18 @@ import User from "@/Models/User"; // User model for DB access
 import connectDB from "@/Config/DataBase";//  DB connection function
 import Stripe from "stripe"; // Import Stripe SDK
 import transporter from '@/Lib/nodemailer'
-import path from 'path'
-
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" }); // Initialize Stripe with secret key and API version
+
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
 
 export async function GET(req) { // Define GET handler for /api/payment-success
   try {
@@ -65,8 +73,7 @@ export async function GET(req) { // Define GET handler for /api/payment-success
       await user.save();
 
       // Trigger Discord bot
-      console.log("Mock bot call:", { userDiscordId: user.discordId, role: user.role });
-      const botResponse = await fetch("http://localhost:3001/assign-role", { // Replace with production bot URL
+      const botResponse = await fetch(`${process.env.BOT_URL}/assign-role`, { //
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userDiscordId: user.discordId, role: user.role }),
@@ -77,8 +84,13 @@ export async function GET(req) { // Define GET handler for /api/payment-success
         console.error("Bot error:", botData.error); // Log bot errors
       }
 
+      const command = new GetObjectCommand({
+        Bucket: "coreacademy-roadmaps", // Your S3 bucket name
+        Key: `${user.role.toLowerCase()}-roadmap.pdf`, // e.g., frontend-roadmap.pdf
+      });
+      const roadmapUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 }); // URL expires in 1 hour
+
       // Send email with roadmap
-      const roadmapFile = path.join(process.cwd(), "roadmaps", `${user.role.toLowerCase()}-roadmap.pdf`);
       const htmlContent = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
             <h2 style="color: #4a6cf7;">Welcome to CoreAcademy!</h2>
@@ -86,6 +98,7 @@ export async function GET(req) { // Define GET handler for /api/payment-success
             <p>Thanks for joining CoreAcademy! Your <strong>${user.role}</strong> role has been set in our Discord server.</p>
             <p>Join us here: <a href="https://discord.gg/BAbVZBAn" style="color: #4a6cf7; text-decoration: none;">https://discord.gg/BAbVZBAn</a></p>
             <p>We've attached your ${user.role} roadmap—check it out and get started on your learning journey!</p>
+            <p>Your roadmap is ready: <a href="${roadmapUrl}">Download Roadmap</a></p>
             <p>See you in Discord!</p>
             <p><strong>The CoreAcademy Team</strong></p>
           </div>
@@ -95,12 +108,6 @@ export async function GET(req) { // Define GET handler for /api/payment-success
         to: user.email,
         subject: "Welcome to CoreAcademy",
         html: htmlContent,
-        attachments: [
-          {
-            filename: `${user.role}-roadmap.pdf`,
-            path: roadmapFile,
-          },
-        ],
       });
     }
     // Redirect to frontend success page

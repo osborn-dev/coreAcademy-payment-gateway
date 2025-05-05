@@ -39,7 +39,7 @@ export async function POST(req) {
 
         
     try {  // checking user discordId in the server
-      const botRes = await fetch(`http://localhost:3001/check-member?discordId=${discordId}`);
+      const botRes = await fetch(`${process.env.BOT_URL}/check-member?discordId=${discordId}`);
 
       const botData = await botRes.json();
       
@@ -82,7 +82,7 @@ export async function POST(req) {
   } catch (error) {
     console.error("API Error:", error);
     return NextResponse.json(
-      { message: "Failed to process request", error: error.message },
+      { message: "Network Error, kindly try again or come back later", error: error.message },
       { status: 500 }
     );
   }

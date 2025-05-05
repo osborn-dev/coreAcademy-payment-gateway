@@ -5,7 +5,18 @@ import User from "@/Models/User"; // Import User model for DB access
 import connectDB from "@/Config/DataBase"; // Import DB connection function
 import crypto from "crypto"; // Import crypto for Paystack signature verification
 import transporter from "@/Lib/nodemailer"; // Import nodemailer for sending emails
-import path from "path"; // Import path for handling file paths
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+
+const s3Client = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
 
 export async function POST(req) {
   try {
@@ -54,13 +65,13 @@ export async function POST(req) {
       if (!user) {
         return NextResponse.json({ message: "User not found" }, { status: 404 }); // Return 404 if user not found
       }
+      // ? include a validation check for discord id and roadmap
       user.discordRoleAssigned = true; // Flag to indicate Discord role assignment
       user.roadmapSent = true; // Flag to indicate roadmap email sent
       await user.save();
 
       // Trigger Discord bot to assign role
-      console.log("Mock bot call:", { userDiscordId: user.discordId, role: user.role });
-      const botResponse = await fetch("http://localhost:3001/assign-role", { // Replace with your production bot URL
+      const botResponse = await fetch(`${process.env.BOT_URL}/assign-role`, { // Replace with your production bot URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userDiscordId: user.discordId, role: user.role }),
@@ -71,21 +82,27 @@ export async function POST(req) {
         console.error("Bot error:", botData.error); // Log bot errors but don’t fail webhook
       }
 
-      // Prepare roadmap PDF attachment
-      const roadmapFile = path.join(process.cwd(), "roadmaps", `${user.role.toLowerCase()}-roadmap.pdf`);
+       // Generate signed URL for roadmap PDF
+       const command = new GetObjectCommand({
+        Bucket: "coreacademy-roadmaps",
+        Key: `${user.role.toLowerCase()}-roadmap.pdf`,
+      });
+      const roadmapUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
 
-      // HTML email content (same as in /api/payment-success)
+
+      // HTML email content
       const htmlContent = `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
-          <h2 style="color: #4a6cf7;">Welcome to CoreAcademy!</h2>
-          <p>Hey ${user.name},</p>
-          <p>Thanks for joining CoreAcademy! Your <strong>${user.role}</strong> role has been set in our Discord server.</p>
-          <p>Join us here: <a href="https://discord.gg/BAbVZBAn" style="color: #4a6cf7; text-decoration: none;">https://discord.gg/BAbVZBAn</a></p>
-          <p>We've attached your ${user.role} roadmap—check it out and get started on your learning journey!</p>
-          <p>See you in Discord!</p>
-          <p><strong>The CoreAcademy Team</strong></p>
-        </div>
-      `;
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+            <h2 style="color: #4a6cf7;">Welcome to CoreAcademy!</h2>
+            <p>Hey ${user.name},</p>
+            <p>Thanks for joining CoreAcademy! Your <strong>${user.role}</strong> role has been set in our Discord server.</p>
+            <p>Join us here: <a href="https://discord.gg/BAbVZBAn" style="color: #4a6cf7; text-decoration: none;">https://discord.gg/BAbVZBAn</a></p>
+            <p>We've attached your ${user.role} roadmap—check it out and get started on your learning journey!</p>
+            <p>Your roadmap is ready: <a href="${roadmapUrl}">Download Roadmap</a></p>
+            <p>See you in Discord!</p>
+            <p><strong>The CoreAcademy Team</strong></p>
+          </div>
+        `; 
 
       // Send email with Discord link and PDF roadmap
       await transporter.sendMail({
@@ -93,12 +110,6 @@ export async function POST(req) {
         to: user.email, // User’s email
         subject: "Welcome to CoreAcademy", // Email subject
         html: htmlContent, // HTML email body
-        attachments: [
-          {
-            filename: `${user.role}-roadmap.pdf`, // Attachment name
-            path: roadmapFile, // Path to PDF file
-          },
-        ],
       });
 
       // Return success response to Paystack (required to avoid retries)

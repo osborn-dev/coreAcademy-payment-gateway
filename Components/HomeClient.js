@@ -40,7 +40,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    toast.info("Important !! Join the server before proceeding with payment if you haven't joined yet!", {
+    toast.info("Important❗Join the server before proceeding with payment if you haven't joined yet!", {
       position: "top-center",
       autoClose: 6000,
       hideProgressBar: true,

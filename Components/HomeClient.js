@@ -177,7 +177,7 @@ export default function Home() {
                 placeholder="Your full name"
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full p-3 text-base sm:text-base border border-gray-300 hover:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full p-3 text-base sm:text-base border border-gray-300 hover:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -190,7 +190,7 @@ export default function Home() {
                 placeholder="Your Email Address"
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full p-3 text-base sm:text-base border border-gray-300 hover:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full p-3 text-base sm:text-base border border-gray-300 hover:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -204,7 +204,7 @@ export default function Home() {
                 required
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full p-3 text-base sm:text-base border border-gray-300 rounded-md focus:outline-none hover:border-gray-600 focus:ring-2 focus:ring-orange-500"
+                className="w-full p-3 text-base sm:text-base border border-gray-300 rounded-md focus:outline-none hover:border-gray-600 focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Choose a Path</option>
                 <option value="frontend">Frontend Development</option>
@@ -220,7 +220,7 @@ export default function Home() {
                 onChange={(e) => setPaymentMethod(e.target.value)}
                 value={paymentMethod}
                 required
-                className="w-full p-3 text-base sm:text-base border border-gray-300 hover:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full p-3 text-base sm:text-base border border-gray-300 hover:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Payment method</option>
                 <option value="Paystack">Paystack</option>
@@ -240,7 +240,7 @@ export default function Home() {
                 placeholder="How Did You Discover Us?"
                 onChange={(e) => setHowHeard(e.target.value)}
                 required
-                className="w-full p-3 text-base sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 hover:border-gray-600 focus:ring-orange-500"
+                className="w-full p-3 text-base sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 hover:border-gray-600 focus:ring-blue-500"
               />
             </div>
 
@@ -253,7 +253,7 @@ export default function Home() {
                 placeholder="Enter your discord ID"
                 onChange={(e) => setDiscordID(e.target.value)}
                 required
-                className="w-full p-3 text-base sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 hover:border-gray-600 focus:ring-orange-500"
+                className="w-full p-3 text-base sm:text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 hover:border-gray-600 focus:ring-blue-500"
               />
             </div>
             <p

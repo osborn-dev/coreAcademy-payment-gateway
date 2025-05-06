@@ -40,7 +40,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    toast.info("Join the server before proceeding with payment if you haven't joined yet", {
+    toast.info("Important !! Join the server before proceeding with payment if you haven't joined yet!", {
       position: "top-center",
       autoClose: 6000,
       hideProgressBar: true,
@@ -102,28 +102,28 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-4 lg:p-6 relative overflow-hidden">
+    <main className="min-h-screen bg-gray-900 flex items-center justify-center p-6 sm:p-4 lg:p-6 relative overflow-hidden">
       {/* Logo */}
-      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 lg:top-8 lg:left-8 flex items-center gap-2 z-20">
+      <div className="absolute top-6 left-6 sm:top-6 sm:left-6 lg:top-8 lg:left-8 flex items-center gap-2 z-20">
         <FontAwesomeIcon icon={faCode} className="text-blue-500 text-xl sm:text-xl" />
-        <span className="text-xl sm:text-xl lg:text-2xl font-semibold text-white">CoreAcademy</span>
+        <span className="text-lg sm:text-xl lg:text-2xl font-semibold text-white">CoreAcademy</span>
       </div>
 
       {/* Navigation Links */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 lg:top-8 lg:right-8 flex items-center gap-3 sm:gap-4 z-20">
+      <div className="absolute top-6 right-6 sm:top-6 sm:right-6 lg:top-8 lg:right-8 flex items-center gap-3 sm:gap-4 z-20">
         <Link
           href="/about"
-          className="text-base sm:text-base lg:text-lg text-white hover:text-blue-300 transition-colors hidden sm:block"
+          className="text-sm sm:text-base lg:text-lg text-white hover:text-blue-300 transition-colors hidden sm:block"
         >
-          Why CoreAcademy???
+          Why CoreAcademy?
         </Link>
         <a
-          href="https://discord.gg/eqQhNkcCm9"
-          className="text-base sm:text-base lg:text-lg text-white bg-blue-500 px-4 py-2 sm:px-4 sm:py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
-        >
-          <FontAwesomeIcon icon={faDiscord} className="text-white text-xl sm:text-xl" />
-          Join The Server
-        </a>
+        href="https://discord.gg/eqQhNkcCm9"
+        className="text-sm sm:text-base lg:text-lg text-white bg-blue-500 px-3 py-1 sm:px-4 sm:py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 sm:gap-2"
+      >
+        <FontAwesomeIcon icon={faDiscord} className="text-white text-lg sm:text-xl" />
+        Join The Server
+      </a>
       </div>
 
       {/* Animated Background Element */}
@@ -149,7 +149,7 @@ export default function Home() {
 
       {/* Form Section */}
       <motion.div
-        className="w-full max-w-[90%] sm:max-w-[450px] lg:max-w-[700px] p-4 sm:p-4 lg:p-6 relative z-10"
+        className="w-full max-w-[360px] sm:max-w-[450px] md:max-w-[630px] lg:max-w-[700px] p-6 sm:p-4 lg:p-6 relative z-10 mt-16 sm:mt-0"
         // TWEAK HERE: max-w-[90%] for mobile form width (~360px on 400px screens, ~600px on 828px screens)
         // Try: max-w-[85%], max-w-[95%], max-w-[500px], max-w-[600px] to adjust within 440px–630px
         initial={{ opacity: 0, y: 20 }}
@@ -157,13 +157,13 @@ export default function Home() {
         transition={{ duration: 0.6 }}
       >
         <form
-          className="bg-white mt-9 p-8 sm:p-6 lg:p-8 rounded-xl shadow-lg w-full"
+          className="bg-white p-6 sm:p-4 lg:p-8 rounded-xl shadow-lg w-full"
           // TWEAK HERE: p-8 for mobile form padding
           // Try: p-7, p-9, p-10 for more/less internal spacing
           onSubmit={handleSubmit}
         >
           <h1
-            className="text-xl sm:text-xl lg:text-2xl font-bold text-gray-800 mb-6 sm:mb-6 text-center"
+            className="text-xl sm:text-xl lg:text-2xl font-bold text-gray-800 mb-8 sm:mb-6 text-center"
           >
             Unlock Your Dev Potential: Your Coding Journey Starts Here!
           </h1>
@@ -181,7 +181,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-3">
+            <div className="flex items-center gap-3 flex-1">
               <FontAwesomeIcon icon={faEnvelope} className="text-gray-500 text-base sm:text-base" />
               <input
                 type="email"
@@ -206,7 +206,7 @@ export default function Home() {
                 onChange={(e) => setRole(e.target.value)}
                 className="w-full p-3 text-base sm:text-base border border-gray-300 rounded-md focus:outline-none hover:border-gray-600 focus:ring-2 focus:ring-orange-500"
               >
-                <option value="">Choose Your Development Path</option>
+                <option value="">Choose a Path</option>
                 <option value="frontend">Frontend Development</option>
                 <option value="backend">Backend Development</option>
                 <option value="fullstack">Fullstack Development</option>
@@ -222,7 +222,7 @@ export default function Home() {
                 required
                 className="w-full p-3 text-base sm:text-base border border-gray-300 hover:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
-                <option value="">Select a Payment method</option>
+                <option value="">Payment method</option>
                 <option value="Paystack">Paystack</option>
                 <option value="Stripe">Stripe</option>
               </select>
@@ -291,8 +291,9 @@ export default function Home() {
 
       {/* Toast Notification */}
       <ToastContainer
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[320px] sm:max-w-[320px] text-base sm:text-base"
-      />
+        className="fixed top-4 w-full max-w-[280px] sm:max-w-[320px] text-sm sm:text-base z-50 toast-container-center"
+        toastClassName="bg-white text-gray-800 p-3 sm:p-4 rounded-lg shadow-lg text-center w-full"
+/>
     </main>
   );
 }

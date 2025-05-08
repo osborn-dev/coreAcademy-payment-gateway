@@ -6,7 +6,7 @@ import Link from 'next/link';
 export default function About() {
   return (
     <>
-      <div>
+      <div className="nav">
         <div className="absolute top-6 left-6 sm:top-6 sm:left-6 lg:top-8 lg:left-8 flex items-center gap-2 z-20">
                 <FontAwesomeIcon icon={faCode} className="text-blue-500 text-xl sm:text-xl" />
                 <span className="text-lg sm:text-xl lg:text-2xl font-semibold text-white">CoreAcademy</span>

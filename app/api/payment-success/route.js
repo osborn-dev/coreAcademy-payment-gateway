@@ -96,7 +96,7 @@ export async function GET(req) { // Define GET handler for /api/payment-success
             <h2 style="color: #4a6cf7;">Welcome to CoreAcademy!</h2>
             <p>Hey ${user.name},</p>
             <p>Thanks for joining CoreAcademy! Your <strong>${user.role}</strong> role has been set in our Discord server.</p>
-            <p>Join us here: <a href="https://discord.gg/BAbVZBAn" style="color: #4a6cf7; text-decoration: none;">https://discord.gg/BAbVZBAn</a></p>
+            <p>Join us here: <a href="https://discord.gg/eqQhNkcCm9" style="color: #4a6cf7; text-decoration: none;">https://discord.gg/BAbVZBAn</a></p>
             <p>We've attached your ${user.role} roadmap—check it out and get started on your learning journey!</p>
             <p>Your roadmap is ready: <a href="${roadmapUrl}">Download Roadmap</a></p>
             <p>See you in Discord!</p>

@@ -15,12 +15,7 @@ import {
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Lato } from 'next/font/google'
 
-const openfont = Lato({
-  subsets:['latin'],
-  weight:'400',
-})
 
 
 export default function Home() {

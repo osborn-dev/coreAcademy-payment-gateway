@@ -45,7 +45,7 @@ export async function POST(req) {
       
       if (!botRes.ok || !botData.inServer) { // Evaluates bot's response
         return NextResponse.json(
-          { message: "Your Discord ID isn't in our server, join via the button before proceeding with the payment!" },
+          { message: "Your Discord ID isn't in our server, join via the button above before proceeding with the payment!" },
           { status: 403 }
         );
       }
@@ -62,7 +62,7 @@ export async function POST(req) {
 
     // Define payment config for cleaner amount/currency logic
     const paymentConfig = {
-      Paystack: { amount: 10000, currency: "NGN" },
+      Paystack: { amount: 3000000, currency: "NGN" },
       Stripe: { amount: 6000, currency: "USD" },
     };
 

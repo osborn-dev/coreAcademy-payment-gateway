@@ -152,7 +152,7 @@ export default function Home() {
         transition={{ duration: 0.6 }}
       >
         <form
-          className="bg-white p-6 sm:p-4 lg:p-8 rounded-xl shadow-lg w-full"
+          className="bg-white p-6 sm:p-8 lg:p-8 rounded-xl shadow-lg border w-full max-w-3xl mx-1"
           // TWEAK HERE: p-8 for mobile form padding
           // Try: p-7, p-9, p-10 for more/less internal spacing
           onSubmit={handleSubmit}
@@ -274,6 +274,29 @@ export default function Home() {
                 </>
               )}
             </button>
+            <p
+                style={{
+                  fontSize: "0.9em",
+                  color: "#666",
+                  textAlign: "center",
+                  marginTop: "1rem",
+                }}
+              >
+                By proceeding, you acknowledge that you have read and understood, and agree to CoreAcademy&apos;s{" "}
+                <Link
+                  href="/terms"
+                  className="text-blue-500 hover:text-blue-600 underline transition-colors"
+                >
+                  Terms
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="text-blue-500 hover:text-blue-600 underline transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </p>
           </div>
         </form>
         <Link

@@ -62,7 +62,7 @@ export async function POST(req) {
 
     // Define payment config for cleaner amount/currency logic
     const paymentConfig = {
-      Paystack: { amount: 3000000, currency: "NGN" },
+      Paystack: { amount: 2000000, currency: "NGN" },
       Stripe: { amount: 6000, currency: "USD" },
     };
 

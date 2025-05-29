@@ -301,7 +301,7 @@ export default function Home() {
         </form>
         <Link
           href="/about"
-          className="text-base sm:text-base text-white hover:text-blue-300 transition-colors block sm:hidden text-center mt-6 sm:mt-6"
+          className="text-base sm:text-base text-white hover:text-blue-300 transition-colors block sm:hidden text-center mt-6 sm:mt-6 underline"
         >
           Why CoreAcademy?
         </Link>

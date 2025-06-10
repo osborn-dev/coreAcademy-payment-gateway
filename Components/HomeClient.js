@@ -10,9 +10,10 @@ import {
   faCreditCard, 
   faQuestionCircle,
   faRocket,
-  faCode
+  faCode,faCalendar,faCalendarDays,
+  faCalendarDay
 } from "@fortawesome/free-solid-svg-icons";
-import { faDiscord } from "@fortawesome/free-brands-svg-icons";
+import { faDiscord, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -26,13 +27,6 @@ export default function Home() {
   const [role, setRole] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const astronautVariants = {
-    float: {
-      y: [-10, 10, -10],
-      transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-    },
-  };
 
   useEffect(() => {
     toast.info("Important❗Join the server before proceeding with payment if you haven't joined yet!", {
@@ -106,20 +100,28 @@ export default function Home() {
 
       {/* Navigation Links */}
       <div className="absolute top-6 right-6 sm:top-6 sm:right-6 lg:top-8 lg:right-8 flex items-center gap-3 sm:gap-4 z-20">
-        <Link
-          href="/about"
-          className="text-sm sm:text-base lg:text-lg text-white hover:text-blue-300 transition-colors hidden sm:block"
-        >
-          Why CoreAcademy?
-        </Link>
-        <a
-        href="https://discord.gg/eqQhNkcCm9"
-        className="text-sm sm:text-base lg:text-lg text-white bg-blue-500 px-3 py-1 sm:px-4 sm:py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 sm:gap-2"
-      >
-        <FontAwesomeIcon icon={faDiscord} className="text-white text-lg sm:text-xl" />
-        Join The Server
-      </a>
-      </div>
+  <Link
+    href="/about"
+    className="text-sm sm:text-base lg:text-lg text-white hover:text-blue-300 transition-colors hidden sm:block"
+  >
+    Why CoreAcademy?
+  </Link>
+  <a
+    href="https://discord.gg/eqQhNkcCm9"
+    className="text-sm sm:text-base lg:text-lg text-white bg-blue-500 px-3 py-1 sm:px-4 sm:py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 sm:gap-2"
+  >
+    <FontAwesomeIcon icon={faDiscord} className="text-white text-lg sm:text-xl" />
+    Join The Server
+  </a>
+  {/* Help Button for Wide Screens */}
+  <button
+    className="hidden lg:flex items-center justify-center p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition-colors"
+    onClick={() => alert("Help clicked! Replace with your help action.")} // Replace with your help action
+    title="Get Help"
+  >
+    <FontAwesomeIcon icon={faQuestionCircle} className="text-white text-lg" />
+  </button>
+</div>
 
       {/* Animated Background Element */}
       <motion.div
@@ -128,18 +130,6 @@ export default function Home() {
         animate={{ opacity: 0.4 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        <motion.svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 200 300"
-          className="w-full max-w-[200px] sm:max-w-[400px] lg:max-w-[600px] h-auto"
-          variants={astronautVariants}
-          animate="float"
-        >
-          <circle cx="100" cy="80" r="25" fill="#4B5EAA" />
-          <rect x="60" y="120" width="80" height="80" rx="10" fill="#FF6F61" />
-          <path d="M80 220 L60 260 M120 220 L140 260" stroke="#4B5EAA" strokeWidth="10" />
-          <path d="M60 140 Q100 100 140 140" stroke="#FFD700" strokeWidth="20" fill="none" />
-        </motion.svg>
       </motion.div>
 
       {/* Form Section */}
@@ -299,12 +289,46 @@ export default function Home() {
               </p>
           </div>
         </form>
-        <Link
-          href="/about"
-          className="text-base sm:text-base text-white hover:text-blue-300 transition-colors block sm:hidden text-center mt-6 sm:mt-6 underline"
-        >
-          Why CoreAcademy?
-        </Link>
+      {/* New Buttons Container */}
+      <div className="mt-4 flex flex-row lg:hidden  gap-2 sm:gap-4 justify-center">
+  {/* Instagram Button */}
+  <a
+    href="https://instagram.com/core.academy.ng"
+    className="p-2 sm:p-4 bg-gray-600 text-white rounded-full hover:bg-blue-500 font-semibold flex items-center justify-center"
+    title="Follow on Instagram"
+  >
+    <FontAwesomeIcon icon={faInstagram} className="text-base sm:text-xl" />
+  </a>
+  {/* Book a Session Button */}
+  <button
+    className="p-2 sm:p-4 bg-gray-600 text-white rounded-full hover:bg-blue-500 font-semibold flex items-center justify-center"
+    onClick={() => alert("Book a Session clicked!")}
+    title="Book a Session"
+  >
+    <FontAwesomeIcon icon={faCalendarDays} className="text-base sm:text-xl" />
+  </button>
+  {/* Help Button */}
+  <button
+    className="p-2 sm:p-4 bg-gray-600 text-white rounded-full hover:bg-blue-500 font-semibold flex items-center justify-center"
+    onClick={() => alert("Help clicked!")}
+    title="Get Help"
+  >
+    <FontAwesomeIcon icon={faQuestionCircle} className="text-base sm:text-xl" />
+  </button>
+</div>
+<Link
+  href="/about"
+  className="text-base sm:text-base text-white hover:text-blue-300 transition-colors block sm:hidden text-center mt-4 sm:mt-6 underline"
+>
+  Why CoreAcademy?
+</Link>
+      {/* Instagram Button for Wide Screens (Bottom-Left) */}
+      <a
+        href="https://instagram.core.academy.ng" // Replace with your Instagram URL
+        className="hidden lg:flex fixed bottom-4 left-10 p-3 bg-gray-600 text-white rounded-full hover:bg-gray-400 transition-colors items-center justify-center gap-2 z-50"
+      >
+        <FontAwesomeIcon icon={faInstagram} className="text-lg" />
+      </a>
       </motion.div>
 
       {/* Toast Notification */}

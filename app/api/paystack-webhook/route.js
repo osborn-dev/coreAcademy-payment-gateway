@@ -71,7 +71,7 @@ export async function POST(req) {
       await user.save();
 
       // Trigger Discord bot to assign role
-      const botResponse = await fetch(`${process.env.BOT_URL}/assign-role`, { // Replace with your production bot URL
+      const botResponse = await fetch(`${process.env.BOT_URL}/assign-role`, { 
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userDiscordId: user.discordId, role: user.role }),

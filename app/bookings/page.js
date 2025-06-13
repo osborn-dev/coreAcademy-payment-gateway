@@ -16,12 +16,16 @@ export default function BookingsPage() {
   }, [])  // Empty dependency array means this runs only once on mount
 
   return (
-    <div className="max-w-3xl mx-auto p-6">  {/* Main container with max width and padding */}
+    <div className="max-w-3xl mx-auto p-6 text-center">  {/* Main container with max width and padding */}
       {/* Page heading */}
-      <h1 className="text-3xl font-bold mb-2">Schedule Your Free Session</h1>
-      {/* Subheading */}
-      <p className="text-gray-600 mb-6">
-        Get personalized guidance on your tech career path
+       <h1 className="text-3xl font-bold mb-3">
+        Transition Into Tech With Confidence
+      </h1>
+  
+      {/* Centered subheading with clearer value proposition */}
+
+      <p className="text-gray-600 mb-6 mx-auto max-w-md">  {/* Added mx-auto and max-w-md */}
+        Let&apos;s{" "} plan your successful career switch
       </p>
       
       {/* Timezone selection section */}

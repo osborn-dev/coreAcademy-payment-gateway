@@ -116,7 +116,7 @@ export default function Home() {
 
       {/* Form Section */}
       <motion.div
-        className="w-full max-w-[360px] sm:max-w-[450px] md:max-w-[630px] lg:max-w-[700px] p-6 sm:p-4 lg:p-6 relative z-10 mt-16 sm:mt-0"
+        className="w-full max-w-[360px] sm:max-w-[450px] md:max-w-[630px] lg:max-w-[700px] p-6 sm:p-4 lg:p-6 relative z-10 mt-9 sm:mt-0"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -268,31 +268,35 @@ export default function Home() {
                 </div>
               </form>
 
-            <div className="mt-4 flex flex-row lg:hidden  gap-2 sm:gap-4 justify-center">
-              {/* Instagram Button */}
-              <a
-                href="https://instagram.com/core.academy.ng"
-                className="p-2 sm:p-4 bg-gray-600 text-white rounded-full hover:bg-blue-500 font-semibold flex items-center justify-center"
-                title="Follow on Instagram"
-              >
-                <FontAwesomeIcon icon={faInstagram} className="text-base sm:text-xl" />
-              </a>
-            {/* Book a Session Button */}
-            <Link
+       <div className="mt-4 flex flex-row lg:hidden gap-2 sm:gap-4 justify-center">
+          {/* Instagram Button (unchanged) */}
+          <a
+            href="https://instagram.com/core.academy.ng"
+            className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 font-semibold flex items-center justify-center gap-2"
+            title="Follow on Instagram"
+          >
+            <FontAwesomeIcon icon={faInstagram} className="text-base sm:text-xl" />
+          </a>
+
+          {/* Help Button (unchanged) */}
+          <button
+            className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 font-semibold flex items-center justify-center gap-2"
+            onClick={() => alert("Help clicked!")}
+            title="Get Help"
+          >
+            <FontAwesomeIcon icon={faQuestionCircle} className="text-base sm:text-xl" />
+          </button>
+
+          {/* Book a Session Button - IMPROVED */}
+          <Link
             href="/bookings"
-              className="p-2 sm:p-4 bg-gray-600 text-white rounded-full hover:bg-blue-500 font-semibold flex items-center justify-center"
-            >
-              <FontAwesomeIcon icon={faCalendarDays} className="text-base sm:text-xl" />
-            </Link>
-            {/* Help Button */}
-            <button
-              className="p-2 sm:p-4 bg-gray-600 text-white rounded-full hover:bg-blue-500 font-semibold flex items-center justify-center"
-              onClick={() => alert("Help clicked!")}
-              title="Get Help"
-            >
-              <FontAwesomeIcon icon={faQuestionCircle} className="text-base sm:text-xl" />
-            </button>
-          </div>
+            className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 font-semibold flex items-center justify-center gap-2"
+            aria-label="Book a Session"
+          >
+            <FontAwesomeIcon icon={faCalendarDays} className="text-lg" />
+            <span className="text-sm">Book</span> {/* Always visible text */}
+          </Link>
+     </div>
           <Link
             href="/about"
             className="text-base sm:text-base text-white hover:text-blue-300 transition-colors block sm:hidden text-center mt-4 sm:mt-6 underline"

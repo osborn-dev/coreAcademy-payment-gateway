@@ -11,8 +11,8 @@ export default function PrivacyPolicy() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 flex items-center justify-center p-6 sm:p-8 lg:p-12">
-      <div className="w-full">
+    <main className="min-h-screen bg-gray-900 flex items-center justify-center p-6 sm:p-8 lg:p-12">
+      <div className="w-full max-w-3xl bg-white rounded-lg p-6 sm:p-8 shadow-lg">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

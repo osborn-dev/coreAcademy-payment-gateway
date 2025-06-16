@@ -1,46 +1,69 @@
-'use client'
+import Header from "@/Components/Header1";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCode, faHeart, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
-import Script from 'next/script'
-import TimezoneSelect from 'react-timezone-select'
-import { useState, useEffect } from 'react'
-
-export default function BookingsPage() {
-  const [selectedTimezone, setSelectedTimezone] = useState('')
-
-  useEffect(() => {
-    setSelectedTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone)
-  }, [])
-
+export default function About() {
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-2">Schedule Your Free Session</h1>
-      <p className="text-gray-600 mb-6">
-        Get personalized guidance on your tech career path
-      </p>
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-        <label className="block text-sm font-medium mb-2">
-          Your Timezone
-        </label>
-        <TimezoneSelect
-          value={selectedTimezone}
-          onChange={(tz) => setSelectedTimezone(tz.value)}
-          className="text-sm"
-        />
-        <p className="mt-2 text-xs text-gray-500">
-          Slots will display in: <strong>{selectedTimezone || 'Loading...'}</strong>
-        </p>
-      </div>
+    <>
+      <main className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-6 pt-24 sm:pt-28">
+        <div className="w-full max-w-3xl p-6 sm:p-8 bg-white rounded-t-3xl sm:rounded-xl shadow-lg border border-gray-200 mt-6 sm:mt-0">
+          {/* Heading Section */}
+          <div className="flex items-center gap-2 mb-6">
+            <FontAwesomeIcon icon={faCode} className="text-blue-500 text-xs" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">About CoreAcademy</h1>
+          </div>
 
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-        async
-      />
-      <div
-        className="calendly-inline-widget w-full min-h-[700px]"
-        data-url="https://calendly.com/coreacademy-dev"
-        style={{ minWidth: '320px', height: '700px' }}
-      />
-    </div>
-  )
+          {/* Intro Section */}
+          <section className="mb-8">
+            <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
+              CoreAcademy was born out of real struggles—the confusion, lack of structure, and loneliness that often come with being a self-taught developer. <span className="font-semibold text-blue-600">We’re here to change that.</span>
+            </p>
+          </section>
+
+          {/* Mission Section */}
+          <section className="mb-8">
+            <div className="flex items-start gap-2 mb-4">
+              <FontAwesomeIcon icon={faPeopleGroup} className="text-orange-500 text-xs mt-1.5" />
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Our Mission</h2>
+            </div>
+            <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
+              At CoreAcademy, aspiring developers get structured learning paths, weekly live sessions, and a supportive community—all designed to help you grow with clarity and purpose.
+            </p>
+          </section>
+
+          {/* Impact Section */}
+          <section className="mb-8">
+            <div className="flex items-start gap-2 mb-4">
+              <FontAwesomeIcon icon={faHeart} className="text-red-500 text-xs mt-1.5" />
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Building with Purpose</h2>
+            </div>
+            <p className="text-gray-700 text-base sm:text-lg leading-relaxed">
+              We’re not just building developers—we’re building people who care. A percentage of every payment goes to <span className="font-semibold text-blue-600">CoreFoundation</span>, our outreach initiative focused on feeding the poor and supporting the needy.
+            </p>
+            <p className="text-gray-700 text-base sm:text-lg leading-relaxed mt-4">
+              <span className="font-semibold italic">Grow in tech. Give with purpose.</span>
+            </p>
+          </section>
+
+          {/* Closing Note */}
+          <section className="mb-8">
+            <p className="text-gray-600 text-sm sm:text-base italic text-center">
+              This page is still in progress—just like us. Thanks for building with us from the ground up!
+            </p>
+          </section>
+
+          {/* Call to Action */}
+          <div className="text-center">
+            <Link
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors shadow-md"
+              href="/"
+            >
+            Back to home
+            </Link>
+          </div>
+        </div>
+      </main>
+    </>
+  );
 }

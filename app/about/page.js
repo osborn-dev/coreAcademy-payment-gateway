@@ -1,4 +1,3 @@
-import Header from "@/Components/Header1";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faHeart, faPeopleGroup } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
@@ -10,17 +9,6 @@ export default function About() {
         <div className="absolute top-6 left-6 sm:top-6 sm:left-6 lg:top-8 lg:left-8 flex items-center gap-2 z-20">
                 <FontAwesomeIcon icon={faCode} className="text-blue-500 text-xl sm:text-xl" />
                 <span className="text-lg sm:text-xl lg:text-2xl font-semibold text-white">CoreAcademy</span>
-              </div>
-        
-              {/* Navigation Links */}
-              <div className="absolute top-6 right-6 sm:top-6 sm:right-6 lg:top-8 lg:right-8 flex items-center gap-3 sm:gap-4 z-20">
-                
-                <Link
-                href="/"
-                className="text-sm sm:text-base lg:text-lg text-white bg-blue-500 px-3 py-1 sm:px-4 sm:py-2 rounded-md font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 sm:gap-2"
-              >
-                Home
-              </Link>
               </div>
       </div>
       <main className="min-h-screen bg-gray-900 flex items-center justify-center p-4 sm:p-6 pt-24 sm:pt-28">
@@ -69,6 +57,15 @@ export default function About() {
               This page is still in progress—just like us. Thanks for building with us from the ground up!
             </h3>
           </section>
+          {/* Back to Home Link */}
+          <div className="text-center mt-10">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-md"
+            >
+              <span>Back to Home</span>
+            </Link>
+          </div>
         </div>
       </main>
     </>

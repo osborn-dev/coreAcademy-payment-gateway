@@ -1,9 +1,22 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: the `dark:` variant activates when an ancestor (the
+   <html> element) has the `.dark` class, instead of following the OS media
+   query directly. This lets ThemeProvider override the device preference. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 .toast-container-center {
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-  }
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
 

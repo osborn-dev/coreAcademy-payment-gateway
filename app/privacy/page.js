@@ -11,33 +11,33 @@ export default function PrivacyPolicy() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-100 flex items-center justify-center p-6 sm:p-8 lg:p-12">
+    <main className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center p-6 sm:p-8 lg:p-12 transition-colors">
       <div className="w-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-10 text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-gray-100 mb-10 text-center">
             CoreAcademy Privacy Policy
           </h1>
-          <div className="space-y-10 text-gray-700 text-base sm:text-lg leading-relaxed">
+          <div className="space-y-10 text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed">
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faCalendarAlt} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Effective Date: May 20, 2025</h2>
+                <FontAwesomeIcon icon={faCalendarAlt} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Effective Date: May 20, 2025</h2>
               </div>
               <p>
                 CoreAcademy is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you interact with our platform.
               </p>
             </motion.section>
 
-            <hr className="border-gray-300" />
+            <hr className="border-gray-300 dark:border-white/10" />
 
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faUser} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Information We Collect</h2>
+                <FontAwesomeIcon icon={faUser} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Information We Collect</h2>
               </div>
               <p>We collect the following information when you engage with CoreAcademy:</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
@@ -53,12 +53,12 @@ export default function PrivacyPolicy() {
               </p>
             </motion.section>
 
-            <hr className="border-gray-300" />
+            <hr className="border-gray-300 dark:border-white/10" />
 
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faShieldAlt} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Use of Your Information</h2>
+                <FontAwesomeIcon icon={faShieldAlt} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Use of Your Information</h2>
               </div>
               <p>Your information is used to:</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
@@ -70,12 +70,12 @@ export default function PrivacyPolicy() {
               </ul>
             </motion.section>
 
-            <hr className="border-gray-300" />
+            <hr className="border-gray-300 dark:border-white/10" />
 
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faShareAlt} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Information Sharing</h2>
+                <FontAwesomeIcon icon={faShareAlt} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Information Sharing</h2>
               </div>
               <p>We share your information solely with:</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
@@ -87,24 +87,24 @@ export default function PrivacyPolicy() {
               </p>
             </motion.section>
 
-            <hr className="border-gray-300" />
+            <hr className="border-gray-300 dark:border-white/10" />
 
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faClock} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Data Retention</h2>
+                <FontAwesomeIcon icon={faClock} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Data Retention</h2>
               </div>
               <p>
                 We retain your personal information only for as long as necessary to support your participation and fulfill legal obligations.
               </p>
             </motion.section>
 
-            <hr className="border-gray-300" />
+            <hr className="border-gray-300 dark:border-white/10" />
 
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faUserShield} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Your Rights</h2>
+                <FontAwesomeIcon icon={faUserShield} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Your Rights</h2>
               </div>
               <p>You have the right to:</p>
               <ul className="list-disc pl-6 mt-2 space-y-1">
@@ -116,43 +116,43 @@ export default function PrivacyPolicy() {
                 To exercise these rights, please contact us at{" "}
                 <a
                   href="mailto:support@coreacademy.com"
-                  className="text-blue-600 hover:text-blue-700 underline transition-colors"
+                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline transition-colors"
                 >
                   support@coreacademy.com
                 </a>.
               </p>
             </motion.section>
 
-            <hr className="border-gray-300" />
+            <hr className="border-gray-300 dark:border-white/10" />
 
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faCookieBite} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Cookies and Analytics</h2>
+                <FontAwesomeIcon icon={faCookieBite} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Cookies and Analytics</h2>
               </div>
               <p>
                 We may utilize cookies and analytics tools, such as Vercel Analytics, to improve user experience and analyze platform traffic.
               </p>
             </motion.section>
 
-            <hr className="border-gray-300" />
+            <hr className="border-gray-300 dark:border-white/10" />
 
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faFileAlt} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Policy Updates</h2>
+                <FontAwesomeIcon icon={faFileAlt} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Policy Updates</h2>
               </div>
               <p>
                 We may revise this Privacy Policy to reflect changes in our practices. Significant updates will be communicated via email or platform notifications.
               </p>
             </motion.section>
 
-            <hr className="border-gray-300" />
+            <hr className="border-gray-300 dark:border-white/10" />
 
             <motion.section variants={sectionVariants} initial="initial" animate="animate">
               <div className="flex items-center gap-3 mb-3">
-                <FontAwesomeIcon icon={faLock} className="text-blue-600 text-base" />
-                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Our Commitment</h2>
+                <FontAwesomeIcon icon={faLock} className="text-blue-600 dark:text-blue-400 text-base" />
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 dark:text-gray-100">Our Commitment</h2>
               </div>
               <p>
                 CoreAcademy is dedicated to maintaining a secure and growth-focused environment. Your trust is paramount, and we are committed to protecting your personal information.
